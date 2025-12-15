@@ -9,7 +9,7 @@ let moedas = 50;
 let ambienteAtual = 'cozinha'; 
 
 // Constantes de Jogo
-const INTERVALO_TEMPO = 3000; // 3 segundos para o loop principal
+const INTERVALO_TEMPO = 3000; 
 const DECAY_RATE = 2; 
 const MOEDA_RATE = 1; 
 
@@ -45,6 +45,7 @@ function atualizarMoedasDisplay() {
 
 /**
  * Atualiza a expressão do Pou (o semicírculo da boca).
+ * (CORREÇÃO: Simplifica a boca para garantir a funcionalidade)
  */
 function atualizarStatusDisplay() {
     let bocaContent = ''; 
@@ -54,19 +55,20 @@ function atualizarStatusDisplay() {
     } else if (fome === 0 || diversao === 0 || energia === 0) {
         bocaContent = 'o'; 
     } else if (fome < 20 || diversao < 20 || energia < 20) {
-        bocaContent = 'c'; // Boca triste/preocupada
+        bocaContent = 'c'; 
     } else {
-        bocaContent = ')'; // Boca sorrindo
+        bocaContent = 'J'; // Usando 'J' como um sorriso simples
     }
 
     $pouElement.textContent = bocaContent;
     
-    // Ajustes para a boca parecer mais com um semicírculo ou oval
-    $pouElement.style.fontSize = (saude === 0 || fome === 0) ? '4em' : '2.5em';
+    // Ajustes de estilo para posicionar a boca (Essencial para o visual)
+    $pouElement.style.fontSize = (bocaContent === 'X' || bocaContent === 'o') ? '4em' : '2.5em';
     $pouElement.style.position = 'relative';
-    $pouElement.style.top = (saude === 0 || fome === 0) ? '-20px' : '-40px'; 
+    $pouElement.style.top = (bocaContent === 'X' || bocaContent === 'o') ? '-20px' : '-40px'; 
     $pouElement.style.left = '0';
-    $pouElement.style.transform = (bocaContent === ')') ? 'rotate(90deg)' : 'none';
+    // O Pou original tem a boca lateral, por isso rotacionamos
+    $pouElement.style.transform = (bocaContent === 'J') ? 'rotate(-90deg)' : 'none'; 
 }
 
 // --- MOTOR DO JOGO (GAME LOOP) ---
@@ -196,12 +198,12 @@ function mudarAmbiente(ambiente) {
 }
 
 
-// --- FUNÇÕES PLACEHOLDER DE STATUS (Para o clique nos ícones) ---
+// --- FUNÇÕES PLACEHOLDER DE STATUS ---
 
-function fomeStatus() { alert(`Fome atual: ${fome}.`); }
-function saudeStatus() { alert(`Saúde atual: ${saude}.`); }
-function diversaoStatus() { alert(`Diversão atual: ${diversao}.`); }
-function energiaStatus() { alert(`Energia atual: ${energia}.`); }
+function fomeStatus() { alert(`Fome: ${fome}.`); }
+function saudeStatus() { alert(`Saúde: ${saude}.`); }
+function diversaoStatus() { alert(`Diversão: ${diversao}.`); }
+function energiaStatus() { alert(`Energia: ${energia}.`); }
 
 
 // --- LÓGICA DO MINI GAME ---
@@ -275,3 +277,4 @@ function finalizarMiniGame(saiuCedo = false) {
 mudarAmbiente('cozinha');
 atualizarStatusDisplay();
 atualizarMoedasDisplay();
+        
