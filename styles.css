@@ -1,3 +1,4 @@
+/* CORREÇÃO CRÍTICA 1: O seletor deve ser 'body' (minúsculo) */
 body {
     font-family: 'Arial', sans-serif;
     display: flex;
@@ -114,11 +115,13 @@ body {
     font-size: 3em;
     cursor: pointer;
     position: relative;
-    /* A boca é o text-content, os olhos são after */
-    z-index: 10; /* Garante que o Pou esteja acima de outros elementos */
+    z-index: 10; 
+    /* CORREÇÃO 2: Garante que o texto da boca não tenha cor de fundo */
+    color: black; 
+    text-align: center;
 }
 
-/* Olhos do Pou (Usando ::before e ::after para simplificar a estrutura) */
+/* Olhos do Pou */
 #pou::before {
     /* Olhos (Base Branca e Pupilas Pretas) */
     content: ''; 
