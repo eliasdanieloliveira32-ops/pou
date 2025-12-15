@@ -1,4 +1,4 @@
-/* CORREÇÃO CRÍTICA 1: O seletor deve ser 'body' (minúsculo) */
+/* CORREÇÃO CRÍTICA: Seletor 'body' deve ser minúsculo */
 body {
     font-family: 'Arial', sans-serif;
     display: flex;
@@ -112,13 +112,17 @@ body {
     margin: 40px auto;
     border: 4px solid #000;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); 
-    font-size: 3em;
+    
+    /* Propriedades para garantir que a boca seja estilizada corretamente */
+    font-size: 1em; /* Reduz o tamanho da fonte padrão */
+    line-height: 1; /* Alinhamento da linha para o texto da boca */
+    text-align: center;
+    overflow: hidden; /* Garante que nada transborde */
+
     cursor: pointer;
     position: relative;
     z-index: 10; 
-    /* CORREÇÃO 2: Garante que o texto da boca não tenha cor de fundo */
     color: black; 
-    text-align: center;
 }
 
 /* Olhos do Pou */
@@ -142,7 +146,6 @@ body {
     border-radius: 50%;
     z-index: 1; 
 }
-/* O ::after será usado para limpar a área da boca se necessário, mas por enquanto usamos apenas o ::before */
 #pou::after {
     content: none;
 }
