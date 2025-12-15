@@ -1,209 +1,269 @@
-/* CORREÇÃO CRÍTICA: Seletor 'body' deve ser minúsculo */
-body {
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0; 
-    margin: 0;
-    flex-direction: column;
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-#game-container {
-    border: 5px solid #000;
-    padding: 20px 10px 40px 10px;
-    text-align: center;
-    width: 340px;
-    height: 600px; 
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    position: relative;
-    overflow: hidden;
-    transition: background-color 0.5s;
+body, html {
+  height: 100%;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background-color: #f7c6d5; /* rosa claro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* --- Estilos de Ambientes --- */
-.ambiente-cozinha { background-color: #fce4ec; /* Rosa */ }
-.ambiente-banheiro { background-color: #b3e5fc; /* Azul Bebê */ }
-
-/* --- Barra Superior --- */
-#top-bar {
-    background-color: #f77f98; /* Rosa da barra superior */
-    border-bottom: 3px solid #000;
-    padding: 5px 0;
-    margin: -20px -10px 20px -10px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-}
-#coin-display {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #000;
-    background-color: #f7d540; /* Amarelo */
-    border: 2px solid #000;
-    padding: 5px 10px;
-    border-radius: 15px;
-    margin-right: auto;
-    margin-left: 10px;
-}
-.icon-action {
-    background-color: #4CAF50; 
-    border: 2px solid #000;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 1.2em;
-    cursor: pointer;
-    box-shadow: 2px 2px 0 #000;
-    color: white;
-    padding: 0;
-}
-.level-icon {
-    background-color: #fff; 
-    color: #000;
-    font-weight: bold;
-    border-radius: 50%; 
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
-    font-size: 0.9em;
-    padding: 0;
-    box-shadow: 2px 2px 0 #000;
+.app-container {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  background: #f7c6d5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
-/* --- Controles Centrais --- */
-#center-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 0 10px;
-}
-#center-controls h2 {
-    font-size: 1.5em;
-    margin: 0;
-}
-.control-btn {
-    background-color: #fff;
-    border: 2px solid #000;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 5px;
-    font-size: 1.5em;
-    cursor: pointer;
-    box-shadow: 2px 2px 0 #000;
+/* Barra superior */
+.top-bar {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e39cac;
 }
 
-/* --- O Personagem Pou (CORREÇÃO DE FORMATO E OLHOS) --- */
-
-#pou {
-    background-color: #a87e4f; 
-    width: 150px;
-    height: 150px;
-    line-height: 150px;
-    /* Forma de Pêra */
-    border-radius: 60% 60% 90% 90% / 60% 60% 100% 100%; 
-    margin: 40px auto;
-    border: 4px solid #000;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); 
-    
-    /* Propriedades para garantir que a boca seja estilizada corretamente */
-    font-size: 1em; /* Reduz o tamanho da fonte padrão */
-    line-height: 1; /* Alinhamento da linha para o texto da boca */
-    text-align: center;
-    overflow: hidden; /* Garante que nada transborde */
-
-    cursor: pointer;
-    position: relative;
-    z-index: 10; 
-    color: black; 
+/* Status icon container */
+.status-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50px;
 }
 
-/* Olhos do Pou */
-#pou::before {
-    /* Olhos (Base Branca e Pupilas Pretas) */
-    content: ''; 
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 50px;
-    background-color: transparent;
-    box-shadow: 
-        /* Olho Esquerdo (Branco e Pupila) */
-        -30px 0px 0 10px white,
-        -30px 0px 0 5px black,
-        /* Olho Direito (Branco e Pupila) */
-        30px 0px 0 10px white,
-        30px 0px 0 5px black;
-    border-radius: 50%;
-    z-index: 1; 
-}
-#pou::after {
-    content: none;
+.icon-bg {
+  background-color: #3ec524; /* verde vibrante */
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px #2b8c19;
 }
 
-
-/* --- Ações e Navegação --- */
-#action-buttons button {
-    margin: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 1em; 
-    border: none;
-    border-radius: 8px;
-    background-color: #4CAF50;
-    color: white;
-}
-#nav-panel {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #333; 
-    border-top: 3px solid #000;
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-around;
-}
-#nav-panel button {
-    background: #555;
-    border: 2px solid #000;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 0.9em;
+.icon {
+  font-size: 1.8rem;
+  user-select: none;
 }
 
-/* --- Loja e Mini Game --- */
-.hidden { display: none !important; }
-.loja-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 15px;
-    max-height: 400px;
-    overflow-y: auto;
+/* Barras de status */
+.status-bar-bg {
+  width: 100%;
+  height: 6px;
+  background-color: #a0e59d;
+  border-radius: 3px;
+  margin-top: 6px;
+  overflow: hidden;
 }
-.item-loja {
-    border: 2px solid #555;
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #ffe0b2; 
-    text-align: left;
+
+.status-bar-fill {
+  width: 100%;
+  height: 100%;
+  background-color: #216a0e;
+  border-radius: 3px;
+  transition: width 0.3s ease;
 }
-.item-loja button {
-    background-color: #00796b !important; 
-    color: white;
-    padding: 8px 12px;
-    margin-top: 5px;
-    float: right;
+
+/* Título do cômodo */
+.room-title {
+  margin-top: 1rem;
+  font-size: 2rem;
+  color: #731d49;
+  text-align: center;
+}
+
+/* Pou container */
+.pou-container {
+  margin-top: 2rem;
+  position: relative;
+  width: 210px;
+  height: 240px;
+  animation: sway 6s ease-in-out infinite;
+  cursor: default;
+}
+
+/* Corpo do Pou */
+.pou-body {
+  width: 180px;
+  height: 180px;
+  background-color: #bc8f62; /* marrom claro */
+  border: 4px solid black;
+  border-radius: 120px 120px 90px 90px / 150px 150px 70px 70px;
+  position: relative;
+  margin: 0 auto;
+  box-shadow: inset -10px -10px 15px #996f3a, inset 10px 10px 8px #d7bc87;
+}
+
+/* Rosto */
+.pou-face {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 40px;
+  width: 120px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Olhos */
+.eye {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border: 3.5px solid black;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  animation: blink 5s infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pupil {
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  border-radius: 50%;
+  position: relative;
+  animation: pupil-move 6s ease-in-out infinite;
+}
+
+/* Boca */
+.mouth {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 25px;
+  border-bottom: 5px solid black;
+  border-radius: 0 0 20px 20px;
+}
+
+/* Animações */
+@keyframes blink {
+  0%, 10%, 100% { height: 50px; } 
+  5% { height: 6px; }
+}
+
+@keyframes pupil-move {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(3px) translateY(1.5px); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: translateX(-50%) rotate(-3deg); }
+  50% { transform: translateX(-50%) rotate(3deg); }
+}
+
+/* Estado triste - olhos */
+.pou-sad .eye {
+  animation: none;
+  background-color: #fef8f9;
+  border-color: #770000;
+}
+.pou-sad .pupil {
+  animation: none;
+  background-color: #770000;
+  transform: translateY(10px);
+}
+
+/* Estado dormir - olhos fechados */
+.pou-sleeping .eye {
+  animation: none;
+  background-color: transparent;
+  border: none;
+}
+.pou-sleeping .eye::after {
+  content: '';
+  width: 40px;
+  height: 8px;
+  border-radius: 20px;
+  background-color: black;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Estado feliz - boca sorriso */
+.pou-happy .mouth {
+  width: 40px;
+  height: 25px;
+  border-bottom: none;
+  border-top: 5px solid black;
+  border-radius: 20px 20px 0 0;
+}
+
+/* Barra inferiores - botões */
+.actions-bar {
+  margin-top: auto;
+  width: 100%;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-around;
+  background: transparent;
+  gap: 1rem;
+}
+
+.action-btn {
+  background-color: #3ec524;
+  border: none;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  font-size: 2.5rem;
+  color: white;
+  box-shadow: 0 4px 8px #2a8c1b;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+
+.action-btn:active {
+  transform: scale(0.85);
+  box-shadow: 0 0 15px 4px #76e87e;
+  outline: none;
+}
+
+.action-btn:focus {
+  outline: 2px solid #2a8c1b;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .app-container {
+    max-width: 100vw;
+    padding: 0 0.5rem;
+  }
+  .pou-container {
+    width: 180px;
+    height: 205px;
+  }
+  .room-title {
+    font-size: 1.5rem;
+  }
+  .action-btn {
+    width: 58px;
+    height: 58px;
+    font-size: 2rem;
+  }
 }
