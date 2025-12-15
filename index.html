@@ -1,62 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Pou Virtual</title>
-    <link rel="stylesheet" href="styles.css"> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Pou - Cozinha</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-    <div id="game-container" class="ambiente-cozinha">
-        
-        <div id="top-bar">
-            <div id="coin-display">
-                + <span id="moedas-valor">50</span>
-            </div>
-            
-            <button class="icon-action" onclick="fomeStatus()">🖌️</button>
-            <button class="icon-action" onclick="saudeStatus()">➕</button>
-            <button class="icon-action" onclick="diversaoStatus()">🔒</button>
-            <button class="icon-action" onclick="energiaStatus()">⚡</button>
-            <button class="icon-action level-icon">1</button> </div>
-
-        <div id="center-controls">
-            <button class="control-btn">📸</button>
-            <button class="control-btn" onclick="mudarAmbiente('cozinha')"><</button> 
-            <h2 id="panel-titulo">Cozinha</h2>
-            <button class="control-btn" onclick="mudarAmbiente('banheiro')">></button> 
-            <button class="control-btn">❓</button>
+  <div class="app-container">
+    <header class="top-bar">
+      <div class="status-icon" id="food-status">
+        <div class="icon-bg">
+          <span class="icon">🍎</span>
         </div>
-
-        <div id="pou">
-            </div>
-
-        <div id="center-panel">
-            <div id="action-buttons">
-                </div>
+        <div class="status-bar-bg">
+          <div class="status-bar-fill" id="bar-food"></div>
         </div>
-        
-        <div id="nav-panel">
-            <button onclick="mudarAmbiente('cozinha')">Cozinha</button>
-            <button onclick="mudarAmbiente('banheiro')">Banheiro</button>
-            <button onclick="abrirMiniGame()">Jogar</button>
-            <button onclick="mudarAmbiente('loja')">Loja</button>
+      </div>
+      <div class="status-icon" id="health-status">
+        <div class="icon-bg">
+          <span class="icon">🩺</span>
         </div>
-
-    </div>
-
-    <div id="minigame-container" class="hidden">
-        <h3>Mini Game: Clique Rápido!</h3>
-        <p>Clique no botão o mais rápido possível em <span id="minigame-timer">5</span> segundos!</p>
-        <div id="minigame-content">
-            <p>Cliques: <span id="cliques-count">0</span></p>
-            <button id="minigame-button" onclick="contarClique()" disabled>CLIQUE!</button>
+        <div class="status-bar-bg">
+          <div class="status-bar-fill" id="bar-health"></div>
         </div>
-        <button onclick="finalizarMiniGame(true)">Sair do Jogo</button>
-        <p class="nota-minigame">Recompensa: +Diversão e +Moedas!</p>
-    </div>
+      </div>
+      <div class="status-icon" id="fun-status">
+        <div class="icon-bg">
+          <span class="icon">😄</span>
+        </div>
+        <div class="status-bar-bg">
+          <div class="status-bar-fill" id="bar-fun"></div>
+        </div>
+      </div>
+      <div class="status-icon" id="energy-status">
+        <div class="icon-bg">
+          <span class="icon">⚡</span>
+        </div>
+        <div class="status-bar-bg">
+          <div class="status-bar-fill" id="bar-energy"></div>
+        </div>
+      </div>
+    </header>
 
-    <script src="script.js"></script> 
+    <h1 class="room-title">Cozinha</h1>
+
+    <main>
+      <div class="pou-container" id="pou">
+        <div class="pou-body">
+          <!-- Corpo arredondado -->
+        </div>
+        <div class="pou-face">
+          <div class="eye left-eye">
+            <div class="pupil"></div>
+          </div>
+          <div class="eye right-eye">
+            <div class="pupil"></div>
+          </div>
+          <div class="mouth"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="actions-bar">
+      <button id="feed-btn" class="action-btn" title="Alimentar Pou">🍎</button>
+      <button id="play-btn" class="action-btn" title="Brincar com Pou">😄</button>
+      <button id="sleep-btn" class="action-btn" title="Dormir Pou">💤</button>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
