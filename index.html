@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Pou Virtual</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
 
@@ -25,4 +25,38 @@
             <button class="control-btn">📸</button>
             <button class="control-btn" onclick="mudarAmbiente('cozinha')"><</button> 
             <h2 id="panel-titulo">Cozinha</h2>
-            <button class
+            <button class="control-btn" onclick="mudarAmbiente('banheiro')">></button> 
+            <button class="control-btn">❓</button>
+        </div>
+
+        <div id="pou">
+            </div>
+
+        <div id="center-panel">
+            <div id="action-buttons">
+                </div>
+        </div>
+        
+        <div id="nav-panel">
+            <button onclick="mudarAmbiente('cozinha')">Cozinha</button>
+            <button onclick="mudarAmbiente('banheiro')">Banheiro</button>
+            <button onclick="abrirMiniGame()">Jogar</button>
+            <button onclick="mudarAmbiente('loja')">Loja</button>
+        </div>
+
+    </div>
+
+    <div id="minigame-container" class="hidden">
+        <h3>Mini Game: Clique Rápido!</h3>
+        <p>Clique no botão o mais rápido possível em <span id="minigame-timer">5</span> segundos!</p>
+        <div id="minigame-content">
+            <p>Cliques: <span id="cliques-count">0</span></p>
+            <button id="minigame-button" onclick="contarClique()" disabled>CLIQUE!</button>
+        </div>
+        <button onclick="finalizarMiniGame(true)">Sair do Jogo</button>
+        <p class="nota-minigame">Recompensa: +Diversão e +Moedas!</p>
+    </div>
+
+    <script src="script.js"></script> 
+</body>
+</html>
