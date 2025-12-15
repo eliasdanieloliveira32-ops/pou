@@ -1,6 +1,4 @@
 // --- VARIÁVEIS DE ESTADO E CONSTANTES ---
-
-// Variáveis de Estado Globais (0 a 100)
 let fome = 100;
 let saude = 100;
 let diversao = 100;
@@ -8,12 +6,10 @@ let energia = 100;
 let moedas = 50; 
 let ambienteAtual = 'cozinha'; 
 
-// Constantes de Jogo
 const INTERVALO_TEMPO = 3000; 
 const DECAY_RATE = 2; 
 const MOEDA_RATE = 1; 
 
-// Variáveis para o Mini Game
 let minigameAtivo = false;
 let cliquesMiniGame = 0;
 let tempoMiniGame = 5; 
@@ -21,7 +17,6 @@ let timerInterval;
 
 
 // --- REFERÊNCIAS AOS ELEMENTOS HTML ---
-
 const $moedasValor = document.getElementById('moedas-valor');
 const $pouElement = document.getElementById('pou');
 const $gameContainer = document.getElementById('game-container');
@@ -45,7 +40,7 @@ function atualizarMoedasDisplay() {
 
 /**
  * Atualiza a expressão do Pou (o semicírculo da boca).
- * (CORREÇÃO: Simplifica a boca para garantir a funcionalidade)
+ * (Com posicionamento absoluto para evitar problemas de layout)
  */
 function atualizarStatusDisplay() {
     let bocaContent = ''; 
@@ -57,18 +52,30 @@ function atualizarStatusDisplay() {
     } else if (fome < 20 || diversao < 20 || energia < 20) {
         bocaContent = 'c'; 
     } else {
-        bocaContent = 'J'; // Usando 'J' como um sorriso simples
+        bocaContent = 'J'; // Sorriso
     }
 
     $pouElement.textContent = bocaContent;
     
-    // Ajustes de estilo para posicionar a boca (Essencial para o visual)
-    $pouElement.style.fontSize = (bocaContent === 'X' || bocaContent === 'o') ? '4em' : '2.5em';
-    $pouElement.style.position = 'relative';
-    $pouElement.style.top = (bocaContent === 'X' || bocaContent === 'o') ? '-20px' : '-40px'; 
-    $pouElement.style.left = '0';
-    // O Pou original tem a boca lateral, por isso rotacionamos
-    $pouElement.style.transform = (bocaContent === 'J') ? 'rotate(-90deg)' : 'none'; 
+    // Ajustes de estilo para posicionar a boca (Posicionamento Absoluto CRÍTICO)
+    $pouElement.style.position = 'absolute'; 
+    $pouElement.style.left = '50%';
+    
+    // Estilos Específicos
+    if (bocaContent === 'J') {
+        $pouElement.style.fontSize = '3em';
+        $pouElement.style.top = '75px'; 
+        // Rotaciona e move ligeiramente para a esquerda para a boca lateral do Pou
+        $pouElement.style.transform = 'translateX(-30px) rotate(-90deg)'; 
+    } else if (bocaContent === 'o') {
+        $pouElement.style.fontSize = '4em';
+        $pouElement.style.top = '65px'; 
+        $pouElement.style.transform = 'translateX(-50%)';
+    } else {
+        $pouElement.style.fontSize = '2em';
+        $pouElement.style.top = '70px'; 
+        $pouElement.style.transform = 'translateX(-50%)';
+    }
 }
 
 // --- MOTOR DO JOGO (GAME LOOP) ---
@@ -76,39 +83,34 @@ function atualizarStatusDisplay() {
 function gameLoop() {
     if (minigameAtivo) return; 
 
-    // 1. Decaimento dos Status
+    // Decaimento dos Status
     fome = clamp(fome - DECAY_RATE);
     diversao = clamp(diversao - DECAY_RATE);
-    
-    let energyDecay = DECAY_RATE * 0.5;
-    if (fome < 50 || diversao < 50) {
-        energyDecay = DECAY_RATE * 1.5;
-    }
-    energia = clamp(energia - energyDecay);
+    energia = clamp(energia - DECAY_RATE * (fome < 50 || diversao < 50 ? 1.5 : 0.5));
 
     if (fome === 0 || diversao === 0 || energia === 0) {
         saude = clamp(saude - DECAY_RATE * 2);
     }
 
-    // 2. Geração de Moedas
+    // Geração de Moedas
     moedas += MOEDA_RATE;
     atualizarMoedasDisplay();
 
-    // 3. Verifica a 'Morte'
+    // Verifica a 'Morte'
     if (saude === 0) {
         alert("🚨 Seu Pou morreu! Recarregue a página para começar de novo.");
         clearInterval(gameLoopInterval); 
         return;
     }
 
-    // 4. Atualiza o HTML
+    // Atualiza o HTML
     atualizarStatusDisplay();
 }
 
 const gameLoopInterval = setInterval(gameLoop, INTERVALO_TEMPO);
 
 
-// --- LÓGICA DE ITENS E LOJA ---
+// --- LÓGICA DE ITENS E LOJA (MANTIDA) ---
 
 const itensLoja = {
     "food_maca": { nome: "🍎 Maçã", custo: 5, efeito: { fome: 20 } },
@@ -124,28 +126,19 @@ function comprarEUsarItem(itemId) {
         moedas -= item.custo;
         atualizarMoedasDisplay();
 
-        if (item.efeito.fome) {
-            fome = clamp(fome + item.efeito.fome);
-        }
-        if (item.efeito.energia) {
-            energia = clamp(energia + item.efeito.energia);
-        }
-        if (item.efeito.saude) {
-            saude = clamp(saude + item.efeito.saude);
-        }
+        if (item.efeito.fome) { fome = clamp(fome + item.efeito.fome); }
+        if (item.efeito.energia) { energia = clamp(energia + item.efeito.energia); }
+        if (item.efeito.saude) { saude = clamp(saude + item.efeito.saude); }
 
         atualizarStatusDisplay();
         alert(`Você comprou e usou ${item.nome}! Status restaurados.`);
-        
         mudarAmbiente(ambienteAtual);
-
     } else {
         alert(`Você não tem moedas suficientes! Custa ${item.custo}.`);
     }
 }
 
-
-// --- FUNÇÕES DE AÇÃO DO USUÁRIO ---
+// --- FUNÇÕES DE AÇÃO E NAVEGAÇÃO (MANTIDAS) ---
 
 function curarPou() {
     saude = clamp(saude + 30);
@@ -153,9 +146,6 @@ function curarPou() {
     atualizarStatusDisplay();
     alert("Pou curado! Que banho bom!");
 }
-
-
-// --- FUNÇÕES DE NAVEGAÇÃO E AMBIENTE ---
 
 function mudarAmbiente(ambiente) {
     ambienteAtual = ambiente;
@@ -197,31 +187,23 @@ function mudarAmbiente(ambiente) {
     $actionButtons.innerHTML = botoesHTML;
 }
 
-
-// --- FUNÇÕES PLACEHOLDER DE STATUS ---
+// --- FUNÇÕES PLACEHOLDER DE STATUS E MINI GAME (MANTIDAS) ---
 
 function fomeStatus() { alert(`Fome: ${fome}.`); }
 function saudeStatus() { alert(`Saúde: ${saude}.`); }
 function diversaoStatus() { alert(`Diversão: ${diversao}.`); }
 function energiaStatus() { alert(`Energia: ${energia}.`); }
 
-
-// --- LÓGICA DO MINI GAME ---
-
 function abrirMiniGame() {
     if (minigameAtivo) return;
-
     minigameAtivo = true;
     cliquesMiniGame = 0;
     tempoMiniGame = 5;
     $cliquesCount.textContent = 0;
     $minigameTimer.textContent = tempoMiniGame;
-
     $gameContainer.classList.add('hidden');
     $minigameContainer.classList.remove('hidden');
-    
     $minigameButton.disabled = true;
-
     setTimeout(() => {
         $minigameButton.disabled = false;
         iniciarTimerMiniGame();
@@ -232,7 +214,6 @@ function iniciarTimerMiniGame() {
     timerInterval = setInterval(() => {
         tempoMiniGame--;
         $minigameTimer.textContent = tempoMiniGame;
-
         if (tempoMiniGame <= 0) {
             finalizarMiniGame();
         }
@@ -253,10 +234,8 @@ function finalizarMiniGame(saiuCedo = false) {
     if (!saiuCedo) {
         const diversaoGanha = 5 + Math.floor(cliquesMiniGame / 3);
         const moedasGanhas = 10 + cliquesMiniGame;
-
         diversao = clamp(diversao + diversaoGanha);
         moedas += moedasGanhas;
-
         alert(`🎉 Fim do Mini Game! ${cliquesMiniGame} cliques.\n\nVocê ganhou:\n+${diversaoGanha} Diversão\n+${moedasGanhas} Moedas!`);
     } else {
         alert("Você saiu do Mini Game.");
@@ -271,10 +250,7 @@ function finalizarMiniGame(saiuCedo = false) {
     atualizarMoedasDisplay();
 }
 
-
 // --- INICIALIZAÇÃO ---
-
 mudarAmbiente('cozinha');
 atualizarStatusDisplay();
 atualizarMoedasDisplay();
-        
