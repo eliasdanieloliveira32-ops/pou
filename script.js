@@ -1,127 +1,176 @@
-// Referências dos elementos da UI
-const barFood = document.getElementById('bar-food');
-const barHealth = document.getElementById('bar-health');
-const barFun = document.getElementById('bar-fun');
-const barEnergy = document.getElementById('bar-energy');
+// Pegando elementos do DOM
+const pou = document.getElementById('pou');
+const feedBtn = document.getElementById('feed-btn');
+const playBtn = document.getElementById('play-btn');
+const sleepBtn = document.getElementById('sleep-btn');
 
-const pouElement = document.getElementById('pou');
+const foodIcon = document.getElementById('food-icon');
+const healthIcon = document.getElementById('health-icon');
+const funIcon = document.getElementById('fun-icon');
+const energyIcon = document.getElementById('energy-icon');
+const levelIcon = document.getElementById('level-icon');
 
-const btnFeed = document.getElementById('feed-btn');
-const btnPlay = document.getElementById('play-btn');
-const btnSleep = document.getElementById('sleep-btn');
+const coinDisplay = document.getElementById('coin-display');
 
-// Estados principais do Pou
-let state = {
+const gameContainer = document.getElementById('game-container');
+
+// Criar as barras visuais dinamicamente para evitar conflito de tag incorreta
+const statusBarsConfig = [
+  { id: 'food', label: 'Fome', color: '#4caf50' },
+  { id: 'health', label: 'Saúde', color: '#00bcd4' },
+  { id: 'fun', label: 'Diversão', color: '#ff9800' },
+  { id: 'energy', label: 'Energia', color: '#9c27b0' }
+];
+
+const statusBarsContainer = document.getElementById('status-bars');
+const bars = {}; // armazenar divs de preenchimento e contêiner
+
+// Criar as barras
+function createBars() {
+  statusBarsConfig.forEach(stat => {
+    const container = document.createElement('div');
+    container.className = 'status-bar-container';
+
+    const fill = document.createElement('div');
+    fill.className = 'status-bar-fill';
+    fill.style.backgroundColor = stat.color;
+    fill.style.width = '100%';
+
+    const label = document.createElement('div');
+    label.className = 'status-label';
+    label.textContent = stat.label;
+
+    container.appendChild(fill);
+    container.appendChild(label);
+    statusBarsContainer.appendChild(container);
+
+    bars[stat.id] = fill;
+  });
+}
+
+// Estado inicial do Pou
+let pouState = {
   food: 100,
   health: 100,
   fun: 100,
   energy: 100,
+  coins: 310,
+  level: 0,
   isSleeping: false,
 };
 
-// Constantes para o sistema
-const STATUS_DECAY = 0.5; // a cada tick (nível que diminui)
-const DECAY_INTERVAL = 5000; // ms entre decaimentos automáticos
-const ENERGY_RECOVERY_RATE = 1.5; // energia recuperada por tick no sono
+// Constantes do sistema
+const statusDecay = 1; // perda gradual a cada tick
+const decayIntervalMs = 5000; // 5 segundos tick
+const energyRecoveryRate = 3; // energia recuperada por tick no sono
 
-// Inicializar interface e estados
-function init() {
-  loadState();
-  updateUI();
-  setInterval(tick, DECAY_INTERVAL);
-}
+// Salvar e carregar do localStorage
+const storageKey = 'miniPouState';
 
-// Salvamento no localStorage
 function saveState() {
-  localStorage.setItem('miniPouState', JSON.stringify(state));
+  localStorage.setItem(storageKey, JSON.stringify(pouState));
 }
 
-// Carregar do localStorage
 function loadState() {
-  const saved = localStorage.getItem('miniPouState');
+  const saved = localStorage.getItem(storageKey);
   if (saved) {
-    state = JSON.parse(saved);
+    pouState = JSON.parse(saved);
   }
 }
 
-// Atualiza elementos da interface conforme o estado atual
+// Atualiza as barras e expressões
 function updateUI() {
-  barFood.style.width = state.food + '%';
-  barHealth.style.width = state.health + '%';
-  barFun.style.width = state.fun + '%';
-  barEnergy.style.width = state.energy + '%';
+  bars.food.style.width = pouState.food + '%';
+  bars.health.style.width = pouState.health + '%';
+  bars.fun.style.width = pouState.fun + '%';
+  bars.energy.style.width = pouState.energy + '%';
 
-  // Atualiza expressão do Pou baseada no estado
-  pouElement.classList.remove('pou-sad', 'pou-sleeping', 'pou-happy');
+  coinDisplay.textContent = pouState.coins;
+  levelIcon.textContent = pouState.level;
 
-  if(state.isSleeping) {
-    pouElement.classList.add('pou-sleeping');
-  }
-  else if(state.food < 30 || state.fun < 30) {
-    pouElement.classList.add('pou-sad');
-  }
-  else if(state.food > 70 && state.fun > 70 && state.energy > 70) {
-    pouElement.classList.add('pou-happy');
+  // Atualiza expressão de Pou
+  pou.classList.remove('sad', 'happy', 'sleeping');
+
+  if (pouState.isSleeping) {
+    pou.classList.add('sleeping');
+  } else if (pouState.food < 30 || pouState.fun < 30) {
+    pou.classList.add('sad');
+  } else if (
+    pouState.food > 70 &&
+    pouState.fun > 70 &&
+    pouState.energy > 70 &&
+    pouState.health > 70
+  ) {
+    pou.classList.add('happy');
   }
 }
 
-// Função para animar botão no clique (feedback visual)
+// Animar botão (feedback visual)
 function animateButton(btn) {
-  btn.classList.add('clicked');
+  btn.style.transform = 'scale(0.85)';
+  btn.style.boxShadow = '0 0 15px 4px #76e87e';
   setTimeout(() => {
-    btn.classList.remove('clicked');
+    btn.style.transform = '';
+    btn.style.boxShadow = '';
   }, 200);
 }
 
-// Tick do sistema: decresce estados e recupera energia se dormindo
+// Tick para decadência e recuperação da energia
 function tick() {
-  if(state.isSleeping) {
-    // Recupera energia enquanto dorme (limitado a 100)
-    state.energy = Math.min(100, state.energy + ENERGY_RECOVERY_RATE * (DECAY_INTERVAL / 1000));
-    // Pou acorda automaticamente se energia está cheia
-    if(state.energy >= 100) {
-      state.isSleeping = false;
+  if (pouState.isSleeping) {
+    pouState.energy = Math.min(100, pouState.energy + energyRecoveryRate);
+    if (pouState.energy >= 100) {
+      pouState.isSleeping = false;
+      showMessage('Pou acordou!');
     }
   } else {
-    // Decaimento dos status
-    state.food = Math.max(0, state.food - STATUS_DECAY);
-    state.fun = Math.max(0, state.fun - STATUS_DECAY);
-    state.energy = Math.max(0, state.energy - STATUS_DECAY);
-    state.health = Math.max(0, state.health - STATUS_DECAY / 2);
+    pouState.food = Math.max(0, pouState.food - statusDecay);
+    pouState.fun = Math.max(0, pouState.fun - statusDecay);
+    pouState.energy = Math.max(0, pouState.energy - statusDecay);
+    pouState.health = Math.max(0, pouState.health - statusDecay / 2);
   }
+
   updateUI();
   saveState();
 }
 
-// Eventos dos botões
+// Mensagem rápida (substitui temporariamente moedas para exemplo)
+function showMessage(msg) {
+  const origText = coinDisplay.textContent;
+  coinDisplay.textContent = msg;
+  setTimeout(() => {
+    coinDisplay.textContent = pouState.coins;
+  }, 3000);
+}
 
-btnFeed.addEventListener('click', () => {
-  if(state.isSleeping) return; // Sem interações enquanto dorme
-  animateButton(btnFeed);
-  // Alimenta: aumenta food, reduz energia levemente
-  state.food = Math.min(100, state.food + 25);
-  state.energy = Math.max(0, state.energy - 5);
+// Logica dos botões
+feedBtn.addEventListener('click', () => {
+  if (pouState.isSleeping) return;
+  animateButton(feedBtn);
+  pouState.food = Math.min(100, pouState.food + 25);
+  pouState.energy = Math.max(0, pouState.energy - 5);
   saveState();
   updateUI();
 });
 
-btnPlay.addEventListener('click', () => {
-  if(state.isSleeping) return;
-  animateButton(btnPlay);
-  // Brincar: aumenta fun, reduz energia
-  state.fun = Math.min(100, state.fun + 30);
-  state.energy = Math.max(0, state.energy - 15);
+playBtn.addEventListener('click', () => {
+  if (pouState.isSleeping) return;
+  animateButton(playBtn);
+  pouState.fun = Math.min(100, pouState.fun + 30);
+  pouState.energy = Math.max(0, pouState.energy - 15);
   saveState();
   updateUI();
 });
 
-btnSleep.addEventListener('click', () => {
-  animateButton(btnSleep);
-  // Ativa ou desativa o dormir
-  state.isSleeping = !state.isSleeping;
+sleepBtn.addEventListener('click', () => {
+  animateButton(sleepBtn);
+  pouState.isSleeping = !pouState.isSleeping;
   saveState();
   updateUI();
 });
 
-// Inicializar app
-init();
+// Inicialização da aplicação
+createBars();
+loadState();
+updateUI();
+setInterval(tick, decayIntervalMs);
