@@ -7,66 +7,40 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app-container">
-    <header class="top-bar">
-      <div class="status-icon" id="food-status">
-        <div class="icon-bg">
-          <span class="icon">🍎</span>
-        </div>
-        <div class="status-bar-bg">
-          <div class="status-bar-fill" id="bar-food"></div>
-        </div>
-      </div>
-      <div class="status-icon" id="health-status">
-        <div class="icon-bg">
-          <span class="icon">🩺</span>
-        </div>
-        <div class="status-bar-bg">
-          <div class="status-bar-fill" id="bar-health"></div>
-        </div>
-      </div>
-      <div class="status-icon" id="fun-status">
-        <div class="icon-bg">
-          <span class="icon">😄</span>
-        </div>
-        <div class="status-bar-bg">
-          <div class="status-bar-fill" id="bar-fun"></div>
-        </div>
-      </div>
-      <div class="status-icon" id="energy-status">
-        <div class="icon-bg">
-          <span class="icon">⚡</span>
-        </div>
-        <div class="status-bar-bg">
-          <div class="status-bar-fill" id="bar-energy"></div>
-        </div>
-      </div>
-    </header>
+  <div id="game-container" class="ambiente-cozinha">
+    <div id="top-bar">
+      <div id="coin-display">310</div>
 
-    <h1 class="room-title">Cozinha</h1>
+      <div class="icon-action" title="Comida" id="food-icon">🍗</div>
+      <div class="icon-action" title="Saúde" id="health-icon">+</div>
+      <div class="icon-action" title="Diversão" id="fun-icon">😊</div>
+      <div class="icon-action" title="Energia" id="energy-icon">⚡</div>
 
-    <main>
-      <div class="pou-container" id="pou">
-        <div class="pou-body">
-          <!-- Corpo arredondado -->
-        </div>
-        <div class="pou-face">
-          <div class="eye left-eye">
-            <div class="pupil"></div>
-          </div>
-          <div class="eye right-eye">
-            <div class="pupil"></div>
-          </div>
-          <div class="mouth"></div>
-        </div>
-      </div>
-    </main>
+      <div class="level-icon" id="level-icon">0</div>
+    </div>
 
-    <footer class="actions-bar">
-      <button id="feed-btn" class="action-btn" title="Alimentar Pou">🍎</button>
-      <button id="play-btn" class="action-btn" title="Brincar com Pou">😄</button>
-      <button id="sleep-btn" class="action-btn" title="Dormir Pou">💤</button>
-    </footer>
+    <div id="nav-buttons" style="margin-top: 6px; display: flex; justify-content: center; gap: 10px;">
+      <button id="btn-camera" title="Câmera">📷</button>
+      <button id="btn-back" title="Voltar">&lt;</button>
+      <div style="color: #000; font-weight: bold; font-size: 1.4em;">Cozinha</div>
+      <button id="btn-broom" title="Limpar">🧹</button>
+      <button id="btn-help" title="Ajuda">?</button>
+    </div>
+
+    <div id="pou" title="Pou"></div>
+
+    <div id="status-bars" style="margin: 25px 10px;">
+      <StatusBar label="Fome" color="#4caf50" id="status-food"></StatusBar>
+      <StatusBar label="Saúde" color="#00bcd4" id="status-health"></StatusBar>
+      <StatusBar label="Diversão" color="#ff9800" id="status-fun"></StatusBar>
+      <StatusBar label="Energia" color="#9c27b0" id="status-energy"></StatusBar>
+    </div>
+
+    <div id="action-buttons">
+      <button id="feed-btn" title="Alimentar Pou">🍎 Alimentar</button>
+      <button id="play-btn" title="Brincar com Pou">😄 Brincar</button>
+      <button id="sleep-btn" title="Dormir Pou">💤 Dormir</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
